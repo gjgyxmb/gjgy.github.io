@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>网址导航</title>
+    <style>
+        html,body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: #d0d6da;
+        }
+        div, ul, li, h1, h2, h3, h4, h5, h6, input, textarea, select, p, iframe, a, img, button, form, table, th, tr, td, tbody, footer, header, menu, video {
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+        button {
+            border: none;
+            cursor: pointer;
+        }
+        img {
+            border: none;
+            -webkit-user-drag: none;
+            user-select: none;
+            vertical-align: top;
+        }
+        .header {
+            padding: 4px 12px;
+            display: flex;
+            align-items: center;
+            color: #fff;
+            background-color: #20a176;
+            font-size: 12px;
+        }
+        .header img {
+            width: 80px;
+            height: 36px;
+        }
+        .header span {
+            margin-left: 6px;
+        }
+        .banner {
+            width: 100%;
+        }
+        .info {
+            padding: 6px;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #fff;
+            background-color: #20a176;
+        }
+        .info img {
+            width: 20px;
+            height: 20px;
+            margin: 0 8px;
+        }
+        .container {
+            padding: 12px;
+            height: 300px;
+            margin: 12px;
+            border-radius: 8px;
+            background-color: #eceef3;
+        }
+        .container .item {
+            display: flex;
+            align-items: center;
+        }
+        .container .item .domain {
+            flex: 1;
+            padding: 6px;
+            display: flex;
+            align-items: center;
+            border-radius: 6px;
+            border: 1px solid #bbbbbb;
+        }
+        .container .item .domain img {
+            margin: 0 8px;
+            width: 14px;
+            height: 14px;
+        }
+        .container .item button {
+            margin-left: 12px;
+            width: 80px;
+            height: 34px;
+            border-radius: 6px;
+            color: #fff;
+            background-color: #20a176;
+        }
+        .container .item .domain .success {
+            color: #52af8d;
+        }
+        .container .item .domain .warning {
+            color: #ffc107;
+        }
+        .container .item .domain .err {
+            color: #f44336;
+        }
+        .footer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #fff;
+        }
+        .footer img {
+            margin-top: 8px;
+            width: 92%;
+        }
+    </style>
+    <script>
+        const list = [
+            {
+                name: "线路1",
+                domain: "http://jyxmbxz.icu"
+            },
+            {
+                name: "线路2",
+                domain: "http://jyxmb02.icu"
+            },
+            {
+                name: "线路3",
+                domain: "http://jyxmbxz.cyou"
+            },
+            {
+                name: "线路4",
+                domain: "http://jyxmb02.cyou"
+            }
+        ]
+        window.onload = () =>{
+            const container = document.querySelector(".container")
+            list.forEach(async (item) => {
+                let start = window.performance.now()
+                let className
+                let time
+                await fetch(item.domain,{method: "GET", mode: 'no-cors'}).then(()=>{
+                    time = window.performance.now() - start
+                    if (time > 2000) {
+                        className = "warn"
+                    } else {
+                        className = "success"
+                    }
+                }).catch(()=>{
+                    className = "err"
+                })
+                const div = document.createElement("div")
+                div.className = "item"
+                div.innerHTML = `
+                    <div class="domain">
+                        <span class="${className}">${time.toFixed(0)}</span>
+                        <img src="./assets/img/icon01.png" />
+                        <span>${item.name}</span>
+                    </div>
+                    <button>打开网站</button>
+                `
+                div.querySelector("button").onclick = () => {
+                    window.location.href = item.domain
+                }
+                container.appendChild(div)
+            })
+        }
+    </script>
+</head>
+<body>
+    <header class="header">
+        <img src="/assets/img/h_img01.png" />
+        <span>【无法打开请更换其他运营商网络或翻q】</span>
+    </header>
+    <img class="banner" src="./assets/img/img.png" />
+    <div class="info">
+        <img src="/assets/img/img01.png" />
+        <span>请收藏本站，防止失联！永久地址：www.gtjyxzw.vip</span>
+    </div>
+    <div class="container">
+    </div>
+    <div class="footer">
+        <span>网址导航</span>
+        <img src="/assets/img/f_img.png" />
+    </div>
+</body>
+</html>
